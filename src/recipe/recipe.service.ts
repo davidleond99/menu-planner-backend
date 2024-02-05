@@ -9,24 +9,25 @@ import {
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Recipe } from './entities/recipe.entity';
+import { IngredientsService } from 'src/ingredients/ingredients.service';
 
 @Injectable()
 export class RecipeService {
-  private readonly logger = new Logger('Recipeervice');
+  private readonly logger = new Logger('RecipeService');
   constructor(
     @InjectRepository(Recipe)
     private readonly recipeRepository: Repository<Recipe>,
-    // private readonly ingredientsService: IngredientsService,
+    private readonly ingredientsService: IngredientsService,
   ) {}
 
   async create(createRecipeDto: CreateRecipeDto) {
     try {
       const recipe = this.recipeRepository.create(createRecipeDto);
-      // const ingredientsId = createRecipeDto.ingredientsId;
-      // const ingredient = await this.ingredientsService.findByIds(ingredientsId);
-      // recipe.ingredients = ingredient;
+      const ingredientsId = createRecipeDto.ingredientsId;
+      const ingredient = await this.ingredientsService.findByIds(ingredientsId);
+      recipe.ingredients = ingredient;
       await this.recipeRepository.save(recipe);
 
       return recipe;
@@ -37,7 +38,7 @@ export class RecipeService {
 
   findAll() {
     try {
-      return this.recipeRepository.find();
+      return this.recipeRepository.find({ relations: { ingredients: true } });
     } catch (error) {
       this.handleDBExceptions(error);
     }
@@ -46,11 +47,23 @@ export class RecipeService {
   async findOne(name: string) {
     const recipe = await this.recipeRepository.findOneBy({
       name: name,
+      ingredients: true,
     });
 
     if (!recipe) throw new NotFoundException(`Recipe with ${name} not found`);
 
     return recipe;
+  }
+
+  async findByIds(ids: number[]) {
+    console.log(ids);
+    const recipes = await this.recipeRepository.findBy({ id: In(ids) });
+
+    if (!recipes.length) {
+      throw new NotFoundException(`No recipes found for the provided IDs`);
+    }
+
+    return recipes;
   }
 
   async update(id: number, updateRecipeDto: UpdateRecipeDto) {

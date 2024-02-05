@@ -9,7 +9,7 @@ import {
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { UpdateIngredientDto } from './dto/update-ingredient.dto';
 import { Ingredient } from './entities/ingredient.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
@@ -51,11 +51,8 @@ export class IngredientsService {
   }
 
   async findByIds(ids: number[]) {
-    const ingredients: Ingredient[] = [];
-    ids.map(async (id) => {
-      const ingr = await this.findOne(id);
-      ingredients.push(ingr);
-    });
+    console.log(ids);
+    const ingredients = await this.ingredientRepository.findBy({ id: In(ids) });
 
     if (!ingredients.length) {
       throw new NotFoundException(`No ingredients found for the provided IDs`);

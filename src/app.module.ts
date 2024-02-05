@@ -8,6 +8,7 @@ import { CommonModule } from './common/common.module';
 import { AuthModule } from './auth/auth.module';
 import { IngredientsModule } from './ingredients/ingredients.module';
 import { RecipeModule } from './recipe/recipe.module';
+import { MenuModule } from './menu/menu.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { RecipeModule } from './recipe/recipe.module';
     AuthModule,
     IngredientsModule,
     RecipeModule,
+    MenuModule,
   ],
 })
 export class AppModule {}

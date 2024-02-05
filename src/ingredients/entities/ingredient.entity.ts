@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Recipe } from 'src/recipe/entities/recipe.entity';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('ingredient')
 export class Ingredient {
@@ -8,7 +9,7 @@ export class Ingredient {
   @PrimaryGeneratedColumn('increment')
   id: number;
   @ApiProperty()
-  @Column('text', { nullable: false, default: '' })
+  @Column('text', { nullable: false, default: '', unique: true })
   name: string;
   @ApiProperty()
   @Column('text', { nullable: false, default: '' })
@@ -17,6 +18,6 @@ export class Ingredient {
   @Column('text', { nullable: false, default: '' })
   unity: string;
 
-  // @ManyToMany(() => Recipe, (recipes) => recipes.ingredients)
-  // recipes: Recipe[];
+  @ManyToMany(() => Recipe, (recipes) => recipes.ingredients)
+  recipes: Recipe[];
 }

@@ -7,8 +7,6 @@ import {
   Param,
   Delete,
   UseGuards,
-  ParseArrayPipe,
-  Query,
   Put,
 } from '@nestjs/common';
 import { IngredientsService } from './ingredients.service';
@@ -52,19 +50,6 @@ export class IngredientsController {
   })
   findOne(@Param('code') code: string) {
     return this.ingredientsService.findOne(+code);
-  }
-
-  @Get('/findByIds')
-  @ApiResponse({
-    status: 201,
-    description: 'Ingredientes por Ids',
-    type: Number,
-  })
-  findByIds(
-    @Query('ids', new ParseArrayPipe({ items: Number, separator: ',' }))
-    ids: number[],
-  ) {
-    return this.ingredientsService.findByIds(ids);
   }
 
   @Put(':code')
