@@ -1,5 +1,14 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  UseGuards,
+  Put,
+} from '@nestjs/common';
 import { RecipeService } from './recipe.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
@@ -43,7 +52,7 @@ export class RecipeController {
     return this.recipeService.findOne(name);
   }
 
-  @Patch(':id')
+  @Put(':id')
   @ApiResponse({
     status: 201,
     description: 'Receta actualizada',

@@ -82,8 +82,8 @@ export class IngredientsService {
   }
 
   async remove(id: number) {
-    const participante = await this.findOne(id);
-    await this.ingredientRepository.remove(participante);
+    const ingredient = await this.findOne(id);
+    await this.ingredientRepository.remove(ingredient);
   }
 
   private handleDBExceptions(error: any) {

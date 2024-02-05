@@ -10,4 +10,18 @@ export class CreateIngredientDto {
     name: 'name',
   })
   name: string;
+  @IsString()
+  @ApiProperty({
+    required: true,
+    nullable: false,
+    name: 'category',
+  })
+  category: string;
+  @IsString()
+  @ApiProperty({
+    required: true,
+    nullable: false,
+    name: 'unity',
+  })
+  unity: string;
 }

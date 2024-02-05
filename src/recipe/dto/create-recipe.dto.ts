@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class CreateRecipeDto {
   @IsString()
@@ -18,11 +18,11 @@ export class CreateRecipeDto {
   })
   instructions: string;
 
-  @IsArray()
-  @ApiProperty({
-    required: true,
-    nullable: false,
-    name: 'ingredientsId',
-  })
-  ingredientsId: number[];
+  // @IsArray()
+  // @ApiProperty({
+  //   required: true,
+  //   nullable: false,
+  //   name: 'ingredientsId',
+  // })
+  // ingredientsId: number[];
 }

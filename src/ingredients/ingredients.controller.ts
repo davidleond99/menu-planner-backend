@@ -4,12 +4,12 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   UseGuards,
   ParseArrayPipe,
   Query,
+  Put,
 } from '@nestjs/common';
 import { IngredientsService } from './ingredients.service';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
@@ -27,7 +27,7 @@ export class IngredientsController {
   @Post()
   @ApiResponse({
     status: 201,
-    description: 'Participante creado',
+    description: 'Ingrediente creado',
     type: Ingredient,
   })
   create(@Body() createIngredientDto: CreateIngredientDto) {
@@ -37,7 +37,7 @@ export class IngredientsController {
   @Get()
   @ApiResponse({
     status: 201,
-    description: 'Participante creado',
+    description: 'Ingredientes encontrados',
     type: Ingredient,
   })
   findAll() {
@@ -47,20 +47,18 @@ export class IngredientsController {
   @Get(':code')
   @ApiResponse({
     status: 201,
-    description: 'Participante creado',
+    description: 'Ingrediente encontrado',
     type: Ingredient,
   })
   findOne(@Param('code') code: string) {
     return this.ingredientsService.findOne(+code);
   }
 
-
-
   @Get('/findByIds')
   @ApiResponse({
     status: 201,
     description: 'Ingredientes por Ids',
-    type: Ingredient,
+    type: Number,
   })
   findByIds(
     @Query('ids', new ParseArrayPipe({ items: Number, separator: ',' }))
@@ -68,11 +66,11 @@ export class IngredientsController {
   ) {
     return this.ingredientsService.findByIds(ids);
   }
-  
-  @Patch(':code')
+
+  @Put(':code')
   @ApiResponse({
     status: 201,
-    description: 'Participante creado',
+    description: 'Ingrediente actualizado',
     type: Ingredient,
   })
   update(
@@ -85,7 +83,7 @@ export class IngredientsController {
   @Delete(':code')
   @ApiResponse({
     status: 201,
-    description: 'Participante creado',
+    description: 'Ingrediente eliminado',
     type: Ingredient,
   })
   remove(@Param('code') code: string) {
