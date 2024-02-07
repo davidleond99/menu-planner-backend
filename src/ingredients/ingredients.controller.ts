@@ -48,8 +48,18 @@ export class IngredientsController {
     description: 'Ingrediente encontrado',
     type: Ingredient,
   })
-  findOne(@Param('code') code: string) {
+  findOne(@Param('code') code: number) {
     return this.ingredientsService.findOne(+code);
+  }
+
+  @Get('findOneByName/:name')
+  @ApiResponse({
+    status: 201,
+    description: 'Ingrediente encontrado',
+    type: Ingredient,
+  })
+  findOneByName(@Param('name') name: string) {
+    return this.ingredientsService.findOneByName(name);
   }
 
   @Put(':code')

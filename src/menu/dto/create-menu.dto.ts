@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsArray, IsNumber, IsDate } from 'class-validator';
+import { IsString, IsArray, IsNumber } from 'class-validator';
 
 export class CreateMenuDto {
   @IsNumber()
@@ -20,23 +20,14 @@ export class CreateMenuDto {
   })
   name: string;
 
-  @IsDate()
+  @IsString()
   @ApiProperty({
-    type: Date,
+    type: String,
     required: true,
     nullable: false,
     name: 'dateStart',
   })
-  dateStart: Date;
-
-  @IsDate()
-  @ApiProperty({
-    type: Date,
-    required: true,
-    nullable: false,
-    name: 'dateEnd',
-  })
-  dateEnd: Date;
+  dateStart: string;
 
   @IsArray()
   @IsNumber({}, { each: true })

@@ -44,10 +44,9 @@ export class RecipeService {
     }
   }
 
-  async findOne(name: string) {
+  async findOneByName(name: string) {
     const recipe = await this.recipeRepository.findOneBy({
       name: name,
-      ingredients: true,
     });
 
     if (!recipe) throw new NotFoundException(`Recipe with ${name} not found`);
@@ -55,8 +54,18 @@ export class RecipeService {
     return recipe;
   }
 
+  async findOne(id: number) {
+    const recipe = await this.recipeRepository.findOne({
+      relations: { ingredients: true },
+      where: { id: +id },
+    });
+
+    if (!recipe) throw new NotFoundException(`Recipe with ${id} not found`);
+
+    return recipe;
+  }
+
   async findByIds(ids: number[]) {
-    console.log(ids);
     const recipes = await this.recipeRepository.findBy({ id: In(ids) });
 
     if (!recipes.length) {
@@ -67,9 +76,13 @@ export class RecipeService {
   }
 
   async update(id: number, updateRecipeDto: UpdateRecipeDto) {
+    const ingredientsId = updateRecipeDto.ingredientsId;
+    const ingredients = await this.ingredientsService.findByIds(ingredientsId!);
+    // recipe.ingredients = ingredient;
     const recipe = await this.recipeRepository.preload({
       id: +id,
       ...updateRecipeDto,
+      ingredients: ingredients,
     });
 
     if (!recipe) throw new NotFoundException(`recipe with id: ${id} not found`);
@@ -82,8 +95,8 @@ export class RecipeService {
     }
   }
 
-  async remove(name: string) {
-    const recipe = await this.findOne(name);
+  async remove(id: number) {
+    const recipe = await this.findOne(+id);
     await this.recipeRepository.remove(recipe);
   }
 

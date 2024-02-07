@@ -35,30 +35,45 @@ export class MenuService {
       this.handleDBExceptions(error);
     }
   }
-
-  findAll() {
+  findByUserId(userId: number) {
     try {
-      return this.menuRepository.find({ relations: { recipes: true } });
+      return this.menuRepository.find({
+        relations: { recipes: { ingredients: true } },
+        where: { userId: +userId },
+      });
     } catch (error) {
       this.handleDBExceptions(error);
     }
   }
 
-  async findOne(name: string) {
-    const recipe = await this.menuRepository.findOneBy({
-      name: name,
-      recipes: true,
+  findAll() {
+    try {
+      return this.menuRepository.find({
+        relations: { recipes: { ingredients: true } },
+      });
+    } catch (error) {
+      this.handleDBExceptions(error);
+    }
+  }
+
+  async findOne(id: number) {
+    const recipe = await this.menuRepository.findOne({
+      relations: { recipes: { ingredients: true } },
+      where: { id: +id },
     });
 
-    if (!recipe) throw new NotFoundException(`Recipe with ${name} not found`);
+    if (!recipe) throw new NotFoundException(`Recipe with ${id} not found`);
 
     return recipe;
   }
 
   async update(id: number, updateMenuDto: UpdateMenuDto) {
+    const recipesId = updateMenuDto.recipesId;
+    const recipes = await this.recipeService.findByIds(recipesId!);
     const menu = await this.menuRepository.preload({
       id: +id,
       ...updateMenuDto,
+      recipes: recipes,
     });
 
     if (!menu) throw new NotFoundException(`menu with id: ${id} not found`);
@@ -71,8 +86,8 @@ export class MenuService {
     }
   }
 
-  async remove(name: string) {
-    const menu = await this.findOne(name);
+  async remove(id: number) {
+    const menu = await this.findOne(id);
     await this.menuRepository.remove(menu);
   }
 

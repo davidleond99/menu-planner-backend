@@ -1,7 +1,13 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
 import { Recipe } from 'src/recipe/entities/recipe.entity';
-import { Entity, Column, PrimaryGeneratedColumn, JoinTable, ManyToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  JoinTable,
+  ManyToMany,
+} from 'typeorm';
 
 @Entity('menu')
 export class Menu {
@@ -18,13 +24,9 @@ export class Menu {
   name: string;
 
   @ApiProperty()
-  @Column({ type: 'date', nullable: false })
-  dateStart: Date;
+  @Column({ type: 'text', nullable: false })
+  dateStart: string;
 
-  @ApiProperty()
-  @Column({ type: 'date', nullable: false })
-  dateEnd: Date;
-  
   @ManyToMany(() => Recipe, (recipe) => recipe.menus)
   @JoinTable({
     name: 'menu_recipe',

@@ -48,9 +48,13 @@ export class MenuController {
     description: 'Menu encontrado',
     type: Menu,
   })
-  @Get(':name')
-  findOne(@Param('name') name: string) {
-    return this.menuService.findOne(name);
+  @Get(':id')
+  findOne(@Param('id') id: number) {
+    return this.menuService.findOne(id);
+  }
+  @Get('byUserId/:id')
+  findByUserId(@Param('id') id: number) {
+    return this.menuService.findByUserId(id);
   }
 
   @ApiResponse({
@@ -68,8 +72,8 @@ export class MenuController {
     description: 'Menu eliminado',
     type: Menu,
   })
-  @Delete(':name')
-  remove(@Param('name') name: string) {
-    return this.menuService.remove(name);
+  @Delete(':id')
+  remove(@Param('id') id: number) {
+    return this.menuService.remove(id);
   }
 }

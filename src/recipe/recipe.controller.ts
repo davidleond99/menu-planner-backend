@@ -35,21 +35,30 @@ export class RecipeController {
   @Get()
   @ApiResponse({
     status: 201,
-    description: 'Recipe creado',
+    description: 'Receta creado',
     type: Recipe,
   })
   findAll() {
     return this.recipeService.findAll();
   }
 
-  @Get(':name')
+  @Get('findOneByName/:name')
   @ApiResponse({
     status: 201,
-    description: 'Participante creado',
+    description: 'Receta encontrada',
     type: Recipe,
   })
-  findOne(@Param('name') name: string) {
-    return this.recipeService.findOne(name);
+  findOneByName(@Param('name') name: string) {
+    return this.recipeService.findOneByName(name);
+  }
+  @Get(':code')
+  @ApiResponse({
+    status: 201,
+    description: 'Receta encontrada',
+    type: Recipe,
+  })
+  findOne(@Param('code') code: number) {
+    return this.recipeService.findOne(+code);
   }
 
   @Put(':id')
@@ -62,13 +71,14 @@ export class RecipeController {
     return this.recipeService.update(+id, updateRecipeDto);
   }
 
-  @Delete(':name')
+  @Delete(':id')
   @ApiResponse({
     status: 201,
     description: 'Receta eliminada',
     type: Recipe,
   })
-  remove(@Param('name') name: string) {
-    return this.recipeService.remove(name);
+  remove(@Param('id') id: number) {
+    console.log(id)
+    return this.recipeService.remove(+id);
   }
 }

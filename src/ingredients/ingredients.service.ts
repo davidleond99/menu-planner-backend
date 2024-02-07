@@ -49,9 +49,18 @@ export class IngredientsService {
 
     return ingredient;
   }
+  async findOneByName(name: string) {
+    const ingredient = await this.ingredientRepository.findOneBy({
+      name: name,
+    });
+
+    if (!ingredient)
+      throw new NotFoundException(`Ingredient with ${name} not found`);
+
+    return ingredient;
+  }
 
   async findByIds(ids: number[]) {
-    console.log(ids);
     const ingredients = await this.ingredientRepository.findBy({ id: In(ids) });
 
     if (!ingredients.length) {
