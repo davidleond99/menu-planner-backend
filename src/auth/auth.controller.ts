@@ -39,7 +39,7 @@ export class AuthController {
 
   @ApiResponse({
     status: 201,
-    description: 'Menu encontrado',
+    description: 'User encontrado',
   })
   @Get()
   findAll() {
@@ -48,7 +48,7 @@ export class AuthController {
 
   @ApiResponse({
     status: 201,
-    description: 'Menu encontrado',
+    description: 'User encontrado',
   })
   @Get(':id')
   findOne(@Param('id') id: number) {

@@ -25,7 +25,7 @@ export class RecipeController {
   @Post()
   @ApiResponse({
     status: 201,
-    description: 'Participante creado',
+    description: 'Receta creada',
     type: Recipe,
   })
   create(@Body() createRecipeDto: CreateRecipeDto) {
@@ -35,7 +35,7 @@ export class RecipeController {
   @Get()
   @ApiResponse({
     status: 201,
-    description: 'Receta creado',
+    description: 'Receta creada',
     type: Recipe,
   })
   findAll() {
